@@ -1,0 +1,40 @@
+﻿@page "/"
+@using System.Globalization
+
+<PageTitle>Index</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+<br>
+Местное время сервера: @DateTime.Now
+<br>
+Местное время сервера: @_dateTime
+
+<SurveyPrompt Title="How is Blazor working for you?"/>
+
+@code
+{
+    private DateTime _dateTime;
+
+    protected override Task OnInitializedAsync()
+    {
+        _dateTime = DateTime.Now;
+
+        _ = UpdateTime();
+        
+        return base.OnInitializedAsync();
+    }
+
+    private async Task UpdateTime()
+    {
+        while (true)
+        {
+            _dateTime = DateTime.Now;
+
+            await InvokeAsync(() => StateHasChanged());
+    //Thread.Sleep(TimeSpan.FromSeconds(1));
+            await Task.Delay(TimeSpan.FromSeconds(1));
+        }
+    }
+}
