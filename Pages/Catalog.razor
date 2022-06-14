@@ -1,0 +1,51 @@
+﻿@page "/catalog"
+
+<PageTitle>Каталог продуктов</PageTitle>
+
+@using BlazorServerApp.Data.Shop
+@inject ProductCatalogService CatalogService
+
+
+<h1>Каталог продуктов</h1>
+
+@if (_products.Count == 0)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Img</th>
+            <th>Name</th>
+            <th>Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var product in _products)
+        {
+            <tr>
+                <td>@product.Id</td>
+                <td>
+                    <img style="height: 50px" src="@product.Img" alt="@product.Name">
+                </td>
+                <td>@product.Name</td>
+                <td>@product.Price</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Product> _products = new List<Product>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _products = await  CatalogService.GetCatalogAsyng();
+    }
+}
